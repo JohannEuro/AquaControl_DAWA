@@ -1,0 +1,53 @@
+/* Esta es la barra principal de navegación */
+.barra-principal {
+  height: 64px;
+  padding: 0 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: #3f51b5;
+}
+
+/*Saludo a usuarios*/
+.saludo-usuario {
+  font-size: 1rem;
+  margin-right: 16px;
+  font-weight: 300;
+}
+
+/* El contenedor para el logo y el título de la empresa */
+.contenedor-marca {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Espacio entre el ícono y el texto */
+  font-size: 1.5rem;
+  font-weight: 500;
+  text-decoration: none;
+  color: white;
+  cursor: pointer;
+  padding-right: 20px;
+}
+
+.contenedor-marca mat-icon {
+  margin-right: 8px;
+  font-size: 28px;
+  width: 28px;
+  height: 28px;
+}
+
+/* Esta clase es un truco para empujar todo a la derecha */
+.espaciador {
+  flex: 1 1 auto; /* Ocupa todo el espacio disponible */
+}
+
+/* El contenedor para los botones de la derecha */
+.botones-navegacion {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Espacio entre los botones */
+}
+
+/* El texto de saludo "Hola, Usuario" */
+.saludo-usuario {
+  margin: 0 10px;
+  font-size: 0.9rem;
+  font-weight: 300;
+}

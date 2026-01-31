@@ -1,0 +1,14 @@
+.titulo-modulo {
+  font-size: 2.2rem;
+  font-weight: 500;
+  color: #3f51b5;
+  margin: 0;
+}
+
+.text-end {
+  text-align: right;
+}
+
+.w-100 {
+  width: 100%;
+}

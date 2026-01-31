@@ -1,0 +1,76 @@
+<mat-toolbar color="primary" class="d-flex justify-content-between align-items-center">
+
+  <a routerLink="/panel" class="text-white text-decoration-none d-flex align-items-center gap-2">
+    <mat-icon>waves</mat-icon>
+    <span class="fs-5 fw-bold">AquaControl</span>
+  </a>
+
+  <div class="d-none d-md-flex align-items-center gap-2">
+
+    <ng-container *ngIf="nombreUsuario$ | async as nombre">
+      <span class="me-3 small opacity-75">Hola, {{ nombre }}</span>
+
+      <button mat-button routerLink="/usuarios">Usuarios</button>
+      <button mat-button routerLink="/piscinas">Piscinas</button>
+      <button mat-button routerLink="/cultivos">Cultivos</button>
+      <button mat-button routerLink="/parametros">Parámetros</button>
+      <button mat-button routerLink="/alimentacion">Alimentación</button>
+
+      <button mat-icon-button (click)="alCerrarSesion()" matTooltip="Cerrar Sesión">
+        <mat-icon>logout</mat-icon>
+      </button>
+    </ng-container>
+
+    <ng-container *ngIf="(nombreUsuario$ | async) === null">
+      <button mat-button routerLink="/acerca-de">Acerca de</button>
+      <button mat-button routerLink="/iniciar-sesion">Iniciar Sesión</button>
+    </ng-container>
+
+  </div>
+
+
+  <button mat-icon-button [matMenuTriggerFor]="menuMovil" class="d-flex d-md-none text-white">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <mat-menu #menuMovil="matMenu">
+
+    <ng-container *ngIf="nombreUsuario$ | async as nombre">
+      <button mat-menu-item disabled>
+        <mat-icon>account_circle</mat-icon>
+        <span>{{ nombre }}</span>
+      </button>
+      <mat-divider></mat-divider>
+
+      <button mat-menu-item routerLink="/usuarios">
+        <mat-icon>people</mat-icon> Usuarios
+      </button>
+      <button mat-menu-item routerLink="/piscinas">
+        <mat-icon>water</mat-icon> Piscinas
+      </button>
+      <button mat-menu-item routerLink="/cultivos">
+        <mat-icon>grass</mat-icon> Cultivos
+      </button>
+      <button mat-menu-item routerLink="/parametros">
+        <mat-icon>science</mat-icon> Parámetros
+      </button>
+      <button mat-menu-item routerLink="/alimentacion">
+        <mat-icon>restaurant</mat-icon> Alimentación
+      </button>
+
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="alCerrarSesion()">
+        <mat-icon>logout</mat-icon> Cerrar Sesión
+      </button>
+    </ng-container>
+
+    <ng-container *ngIf="(nombreUsuario$ | async) === null">
+      <button mat-menu-item routerLink="/acerca-de">Acerca de</button>
+      <button mat-menu-item routerLink="/iniciar-sesion">
+        <mat-icon>login</mat-icon> Iniciar Sesión
+      </button>
+    </ng-container>
+
+  </mat-menu>
+
+</mat-toolbar>

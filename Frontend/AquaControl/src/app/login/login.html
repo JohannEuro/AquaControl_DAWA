@@ -1,0 +1,31 @@
+<div class="contenedor-login-pagina">
+<mat-card class="tarjeta-login">
+
+  <mat-card-header>
+    <mat-card-title>Iniciar Sesión</mat-card-title>
+    <mat-card-subtitle>Ingresa tus credenciales</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form class="formulario-login">
+
+      <mat-form-field class="campo-completo" appearance="outline">
+        <mat-label >Usuario</mat-label>
+        <input matInput placeholder="Usuario" [(ngModel)]="usuario" name="usuario">
+      </mat-form-field>
+
+      <mat-form-field class="campo-completo" appearance="outline">
+        <mat-label>Clave</mat-label>
+        <input matInput type="password" [(ngModel)]="clave" name="clave">
+      </mat-form-field>
+    </form>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button mat-raised-button color="primary" class="campo-completo" (click)="alHacerLogin()">
+      aceptar
+    </button>"
+  </mat-card-actions>
+
+</mat-card>
+</div>

@@ -1,0 +1,45 @@
+
+.contenedor-login-pagina {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  min-height: calc(100vh - 128px);
+  background-color: #e9ecef;
+}
+
+.tarjeta-login {
+  max-width: 450px;
+  width: 100%;
+  padding: 30px;
+  text-align: center;
+}
+
+.tarjeta-login mat-card-subtitle {
+  color: #6c757d;
+  margin-bottom: 25px;
+}
+
+.tarjeta-login mat-card-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #3f51b5; /* Color primario */
+  margin-bottom: 15px;
+}
+
+/* El formulario dentro de la tarjeta */
+.formulario-login {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.campo-completo {
+  width: 100%;
+}
+
+.tarjeta-login mat-card-actions {
+  padding-top: 25px;
+}
+
+

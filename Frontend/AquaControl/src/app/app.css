@@ -1,0 +1,7 @@
+.contenido-principal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  padding: 20px;
+}

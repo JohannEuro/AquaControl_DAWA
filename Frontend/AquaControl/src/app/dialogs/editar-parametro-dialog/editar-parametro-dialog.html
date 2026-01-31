@@ -1,0 +1,46 @@
+<h2 mat-dialog-title>Modificar Medición</h2>
+
+<mat-dialog-content>
+  <form class="d-flex flex-column gap-2 pt-2">
+
+    <mat-form-field appearance="outline">
+      <mat-label>Seleccionar Cultivo (Lote)</mat-label>
+      <mat-select [(ngModel)]="parametro.cultivoId" name="cultivoId" required>
+        <mat-option *ngFor="let cultivo of listaCultivos" [value]="cultivo.id">
+          Lote #{{ cultivo.id }} - {{ cultivo.especie }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Fecha y Hora</mat-label>
+      <input matInput type="datetime-local" [(ngModel)]="parametro.fecha" name="fecha">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>pH</mat-label>
+      <input matInput type="number" step="0.1" [(ngModel)]="parametro.ph" name="ph">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Temperatura (°C)</mat-label>
+      <input matInput type="number" step="0.1" [(ngModel)]="parametro.temperatura" name="temperatura">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Oxígeno (mg/L)</mat-label>
+      <input matInput type="number" step="0.1" [(ngModel)]="parametro.oxigeno" name="oxigeno">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Salinidad (ppt)</mat-label>
+      <input matInput type="number" step="0.1" [(ngModel)]="parametro.salinidad" name="salinidad">
+    </mat-form-field>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancelar()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="guardar()">Guardar</button>
+</mat-dialog-actions>

@@ -1,0 +1,18 @@
+# --- ANGULAR (Frontend) ---
+node_modules/
+dist/
+.angular/
+*.log
+
+# --- .NET (Backend) ---
+bin/
+obj/
+.vs/
+*.user
+
+# --- DOCKER ---
+.docker/
+
+# --- SISTEMA ---
+.DS_Store
+Thumbs.db

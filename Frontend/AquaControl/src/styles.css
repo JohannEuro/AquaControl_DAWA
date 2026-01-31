@@ -1,0 +1,62 @@
+/* You can add global styles to this file, and also import other style files */
+
+
+
+html, body {
+  height: 100%;
+}
+body {
+  font-family: 'Roboto', "Helvetica Neue", sans-serif;
+  background-color: #f8f9fa;
+  color: #343a40;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+
+a {
+  text-decoration: none;
+  color: inherit; /* Hereda el color del padre por defecto */
+}
+
+a:hover {
+  text-decoration: underline;
+  /** Podríamos añadir un color de hover específico aquí si lo deseamos **/
+}
+
+/* Mejoras para los títulos */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 500;
+  color: #212529;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+
+.contenedor-pagina-centrado {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+
+.mat-card {
+  border-radius: 10px !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08) !important; /* Sombra más pronunciada */
+}
+
+
+.mat-raised-button {
+  border-radius: 20px !important; /* Bordes más redondos */
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  padding: 0 20px;
+}
+
+
+.mat-form-field {
+  width: 100%;
+}

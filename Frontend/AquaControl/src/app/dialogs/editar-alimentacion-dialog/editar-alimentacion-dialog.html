@@ -1,0 +1,41 @@
+<h2 mat-dialog-title>Modificar Alimentación</h2>
+
+<mat-dialog-content>
+  <form class="d-flex flex-column gap-2 pt-2">
+
+    <mat-form-field appearance="outline">
+      <mat-label>Seleccionar Cultivo (Lote)</mat-label>
+      <mat-select [(ngModel)]="alimentacion.cultivoId" name="cultivoId" required>
+        <mat-option *ngFor="let cultivo of listaCultivos" [value]="cultivo.id">
+          Lote #{{ cultivo.id }} - {{ cultivo.especie }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Fecha y Hora</mat-label>
+      <input matInput type="datetime-local" [(ngModel)]="alimentacion.fecha" name="fecha">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Tipo de Alimento</mat-label>
+      <input matInput [(ngModel)]="alimentacion.tipoAlimento" name="tipoAlimento">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Cantidad (kg)</mat-label>
+      <input matInput type="number" [(ngModel)]="alimentacion.cantidad" name="cantidad">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Observaciones</mat-label>
+      <input matInput [(ngModel)]="alimentacion.observaciones" name="observaciones">
+    </mat-form-field>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancelar()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="guardar()">Guardar</button>
+</mat-dialog-actions>

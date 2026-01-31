@@ -1,0 +1,28 @@
+services:
+  # --- SERVICIO 1: BASE DE DATOS SQL SERVER ---
+  aquacontrol-db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: aquacontrol_sql
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=PasswordFuerte123! 
+    ports:
+      - "1433:1433"
+    volumes:
+      # Mapeamos la carpeta de scripts para que se ejecuten al inicio
+      - ./sql_scripts:/docker-entrypoint-initdb.d
+
+  # --- SERVICIO 2: TU API .NET ---
+  aquacontrol-api:
+    image: aquacontrol-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aquacontrol_api
+    ports:
+      - "5000:8080"
+    depends_on:
+      - aquacontrol-db
+    environment:
+      # Sobrescribimos la conexion para usar la BD de Docker
+      - ConnectionStrings__CadenaSQL=Server=aquacontrol-db;Database=AquaControlDB;User Id=sa;Password=PasswordFuerte123!;TrustServerCertificate=True;

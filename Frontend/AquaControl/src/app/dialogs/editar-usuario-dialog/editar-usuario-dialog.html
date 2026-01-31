@@ -1,0 +1,36 @@
+<h2 mat-dialog-title>Modificar Usuario</h2>
+
+<mat-dialog-content>
+  <form class="d-flex flex-column gap-2 pt-2">
+
+    <mat-form-field appearance="outline">
+      <mat-label>Nombre Completo</mat-label>
+      <input matInput [(ngModel)]="data.nombreCompleto" name="nombreCompleto">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Usuario</mat-label>
+      <input matInput [(ngModel)]="data.usuario" name="usuario">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput [(ngModel)]="data.email" name="email">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Rol</mat-label>
+      <mat-select [(ngModel)]="data.rol" name="rol">
+        <mat-option value="Administrador">Administrador</mat-option>
+        <mat-option value="Productor">Productor</mat-option>
+        <mat-option value="Técnico">Técnico</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancelar()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="guardar()">Guardar</button>
+</mat-dialog-actions>

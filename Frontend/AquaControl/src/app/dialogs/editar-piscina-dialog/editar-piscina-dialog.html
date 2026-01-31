@@ -1,0 +1,32 @@
+<h2 mat-dialog-title>Modificar Piscina</h2>
+
+<mat-dialog-content>
+  <form class="d-flex flex-column gap-2 pt-2">
+
+    <mat-form-field appearance="outline">
+      <mat-label>Nombre</mat-label>
+      <input matInput [(ngModel)]="data.nombre" name="nombre">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Ubicación</mat-label>
+      <input matInput [(ngModel)]="data.ubicacion" name="ubicacion">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Capacidad</mat-label>
+      <input matInput type="number" [(ngModel)]="data.capacidad" name="capacidad">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Estado</mat-label>
+      <input matInput [(ngModel)]="data.estado" name="estado">
+    </mat-form-field>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancelar()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="guardar()">Guardar</button>
+</mat-dialog-actions>

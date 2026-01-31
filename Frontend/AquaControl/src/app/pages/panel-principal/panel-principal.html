@@ -1,0 +1,116 @@
+<div class="container-fluid p-4">
+
+  <h2 class="mb-4 titulo-seccion">Panel de Control General</h2>
+
+  <div class="row mb-4">
+
+    <div class="col-lg-3 col-md-6 mb-4">
+      <mat-card class="stat-card">
+        <div class="d-flex align-items-center p-3">
+          <div class="stat-icon bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px;">
+            <mat-icon>water</mat-icon>
+          </div>
+          <div>
+            <p class="text-muted mb-0">Piscinas Totales</p>
+            <h2 class="mb-0 fw-bold">{{ totalPiscinas }}</h2>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+
+    <div class="col-lg-3 col-md-6 mb-4">
+      <mat-card class="stat-card">
+        <div class="d-flex align-items-center p-3">
+          <div class="stat-icon bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px;">
+            <mat-icon>grass</mat-icon> </div>
+          <div>
+            <p class="text-muted mb-0">Cultivos Activos</p>
+            <h2 class="mb-0 fw-bold">{{ totalCultivos }}</h2>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+
+    <div class="col-lg-3 col-md-6 mb-4">
+      <mat-card class="stat-card">
+        <div class="d-flex align-items-center p-3">
+          <div class="stat-icon bg-info text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px;">
+            <mat-icon>people</mat-icon>
+          </div>
+          <div>
+            <p class="text-muted mb-0">Usuarios</p>
+            <h2 class="mb-0 fw-bold">{{ totalUsuarios }}</h2>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+
+    <div class="col-lg-3 col-md-6 mb-4">
+      <mat-card class="stat-card">
+        <div class="d-flex align-items-center p-3">
+          <div class="stat-icon bg-warning text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px;">
+            <mat-icon>warning</mat-icon>
+          </div>
+          <div>
+            <p class="text-muted mb-0">Alertas (pH)</p>
+            <h2 class="mb-0 fw-bold">{{ totalAlertas }}</h2>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+
+  </div>
+
+  <mat-divider class="my-4"></mat-divider>
+
+  <div class="row">
+    <div class="col-12">
+      <h2 class="titulo-seccion">Acciones Rápidas</h2>
+    </div>
+
+    <div class="col-lg-4 col-md-6 mb-4">
+      <mat-card class="action-card" routerLink="/usuarios">
+        <mat-icon class="action-icon">group</mat-icon>
+        <mat-card-content>
+          <p>Gestión de Usuarios</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="col-lg-4 col-md-6 mb-4">
+      <mat-card class="action-card" routerLink="/piscinas">
+        <mat-icon class="action-icon">pool</mat-icon>
+        <mat-card-content>
+          <p>Gestión de Piscinas</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="col-lg-4 col-md-6 mb-4">
+      <mat-card class="action-card" routerLink="/cultivos">
+        <mat-icon class="action-icon">bug_report</mat-icon>
+        <mat-card-content>
+          <p>Control de Cultivos</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="col-lg-4 col-md-6 mb-4">
+      <mat-card class="action-card" routerLink="/parametros">
+        <mat-icon class="action-icon">thermostat</mat-icon>
+        <mat-card-content>
+          <p>Medir Parámetros</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="col-lg-4 col-md-6 mb-4">
+      <mat-card class="action-card" routerLink="/alimentacion">
+        <mat-icon class="action-icon">restaurant_menu</mat-icon>
+        <mat-card-content>
+          <p>Registrar Alimentación</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
