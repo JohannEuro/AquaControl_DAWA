@@ -47,3 +47,61 @@ Sigue estos pasos para levantar el proyecto en tu máquina local.
 ```bash
 git clone [https://github.com/TU_USUARIO/AquaControl_Backend.git](https://github.com/TU_USUARIO/AquaControl_Backend.git)
 cd AquaControl_Backend
+```
+
+## Paso 2: Desplegar Backend y Base de Datos (Docker)
+Este proyecto utiliza Docker Compose para levantar la API y SQL Server automáticamente.
+1. Navega a la carpeta raíz del proyecto (donde está el docker-compose.yml).
+2. Ejecuta el siguiente comando:
+```bash
+docker-compose up -d
+```
+
+3. **⚠️ IMPORTANTE - Inicialización de la Base de Datos:** Una vez que los contenedores estén arriba, ejecuta este comando para crear las tablas y procedimientos almacenados automáticamente:
+```bash
+docker exec -it aquacontrol_sql /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P PasswordFuerte123! -C -i /docker-entrypoint-initdb.d/init.sql
+```
+
+### Paso 3: Configurar el Frontend (Angular)
+Las dependencias de Angular no se incluyen en el repositorio para ahorrar espacio, debes instalarlas.
+
+1. Navega a la carpeta del frontend:
+```bash
+cd fronteen
+cd AquaControl
+```
+
+O en su defecto abrir la carpeta desde VScode
+
+2. Instala las librerías necesarias:
+```bash
+npm install
+```
+
+3. Ejecuta el servidor de desarrollo:
+```bash
+ng serve -o
+```
+
+## 🌐 Acceso al Sistema
+
+Una vez desplegado, puedes acceder a:
+
+* **Aplicación Web (Frontend):** `http://localhost:4200`
+* **Documentación API (Swagger):** `http://localhost:5000/swagger` (o el puerto configurado en tu docker).
+
+---
+
+## 🤝 Contribuciones
+
+Este es un proyecto académico/profesional en desarrollo. Si encuentras algún bug o quieres mejorar una funcionalidad:
+
+1.  Haz un Fork del proyecto.
+2.  Crea una nueva rama (`git checkout -b feature/nueva-funcionalidad`).
+3.  Haz tus cambios y commits (`git commit -m 'Agregado X'`).
+4.  Sube tus cambios (`git push origin feature/nueva-funcionalidad`).
+5.  Abre un Pull Request.
+
+---
+
+**Desarrollado con ❤️ y mucho café.**
