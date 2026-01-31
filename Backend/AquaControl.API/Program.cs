@@ -19,6 +19,7 @@ builder.Services.AddScoped<PiscinaRepository>();
 builder.Services.AddScoped<CultivoRepository>();
 builder.Services.AddScoped<ParametroRepository>();   
 builder.Services.AddScoped<AlimentacionRepository>();
+builder.Services.AddScoped<UsuarioRepository>();
 
 // Configuramos CORS (Para que Angular pueda entrar después)
 builder.Services.AddCors(options =>

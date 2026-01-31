@@ -47,11 +47,11 @@ export interface AlimentacionElement {
 
 export interface UsuarioElement {
   id: number;
-  nombreCompleto: string;
-  usuario: string;
-  email: string;
-  rol: string;
-  estado: string;
+  nombre: string;
+  correo: string;
+  clave: string;
+  rol?: string;       // Opcional (Front)
+  estado?: string;    // Opcional (Front)
 }
 
 @Injectable({
@@ -64,9 +64,6 @@ export class DataService {
 
   // INYECCIÓN DE HTTP CLIENT
   private http = inject(HttpClient);
-
-  // CLAVE LOCALSTORAGE SOLO PARA USUARIOS (No tiene Backend aun)
-  private readonly KEY_USUARIOS = 'aqua_usuarios';
 
   constructor() { }
 
@@ -151,24 +148,18 @@ export class DataService {
   }
 
   // ==========================================
-  // 5. GESTIÓN DE USUARIOS (LOCALSTORAGE - MODO LEGACY)
-  // (Esto se queda igual porque no construimos Backend para usuarios)
+  // 5. GESTIÓN DE USUARIOS (CONECTADO A API)
   // ==========================================
 
-  getUsuarios(): UsuarioElement[] {
-    const data = localStorage.getItem(this.KEY_USUARIOS);
-    if (data) return JSON.parse(data);
-
-    const defaultData = [
-      { id: 1, nombreCompleto: 'Juan Pérez', usuario: 'admin', email: 'juan@aqua.com', rol: 'Administrador', estado: 'Activo' },
-      { id: 2, nombreCompleto: 'María Lopez', usuario: 'productor1', email: 'maria@aqua.com', rol: 'Productor', estado: 'Activo' },
-      { id: 3, nombreCompleto: 'Carlos Ruiz', usuario: 'tecnico_c', email: 'carlos@aqua.com', rol: 'Técnico', estado: 'Vacaciones' }
-    ];
-    this.saveUsuarios(defaultData);
-    return defaultData;
+  getUsuarios(): Observable<UsuarioElement[]> {
+    return this.http.get<UsuarioElement[]>(`${this.apiUrl}/Usuarios`);
   }
 
-  saveUsuarios(data: UsuarioElement[]) {
-    localStorage.setItem(this.KEY_USUARIOS, JSON.stringify(data));
+  saveUsuario(usuario: UsuarioElement): Observable<any> {
+    return this.http.post(`${this.apiUrl}/Usuarios`, usuario);
+  }
+
+  deleteUsuario(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/Usuarios/${id}`);
   }
 }

@@ -101,7 +101,7 @@ BEGIN SELECT A.*, C.Especie FROM Alimentacion A INNER JOIN Cultivos C ON A.Culti
 GO
 
 -- =============================================
--- 4. PROCEDIMIENTOS DE ESCRITURA (XML FIX BLINDADO)
+-- 4. PROCEDIMIENTOS DE ESCRITURA (XML BLINDADO)
 -- Nota: Activamos SET QUOTED_IDENTIFIER ON antes de CADA uno
 -- =============================================
 
@@ -174,5 +174,103 @@ BEGIN
     IF @Accion = 'INSERTAR' BEGIN INSERT INTO Alimentacion VALUES (@CultivoId, @Fecha, @Tipo, @Cant, @Obs); SELECT SCOPE_IDENTITY(); END
     ELSE IF @Accion = 'ACTUALIZAR' BEGIN UPDATE Alimentacion SET CultivoId = @CultivoId, Fecha = @Fecha, TipoAlimento = @Tipo, Cantidad = @Cant, Observaciones = @Obs WHERE Id = @Id; END
     ELSE IF @Accion = 'ELIMINAR' BEGIN DELETE FROM Alimentacion WHERE Id = @Id; END
+END
+GO
+
+-- =============================================
+-- 5. SECCION USUARIO
+-- =============================================
+
+-- 1. Crear Tabla Usuarios (Si no existe)
+IF OBJECT_ID('dbo.Usuarios', 'U') IS NULL
+BEGIN
+    CREATE TABLE Usuarios (
+        Id INT IDENTITY(1,1) PRIMARY KEY,
+        Nombre NVARCHAR(100),
+        Correo NVARCHAR(100) UNIQUE,
+        Clave NVARCHAR(50) -- Texto plano (Requisito académico)
+    );
+
+    -- Insertar Usuario Admin por defecto
+    INSERT INTO Usuarios (Nombre, Correo, Clave) 
+    VALUES ('Administrador', 'admin@aqua.com', '12345');
+END
+GO
+
+-- 2. Procedimiento: Login (Validar Credenciales)
+SET ANSI_NULLS ON;
+GO
+SET QUOTED_IDENTIFIER ON;
+GO
+CREATE OR ALTER PROCEDURE sp_ValidarUsuario
+    @Correo NVARCHAR(100),
+    @Clave NVARCHAR(50)
+AS
+BEGIN
+    SELECT Id, Nombre, Correo 
+    FROM Usuarios 
+    WHERE Correo = @Correo AND Clave = @Clave;
+END
+GO
+
+-- 3. Procedimiento: Listar Usuarios
+SET ANSI_NULLS ON;
+GO
+SET QUOTED_IDENTIFIER ON;
+GO
+CREATE OR ALTER PROCEDURE sp_ListarUsuarios
+AS
+BEGIN
+    SELECT * FROM Usuarios;
+END
+GO
+
+-- 4. Procedimiento: Gestión CRUD con XML
+-- IMPORTANTE: Configuraciones requeridas para manipular XML
+SET ANSI_NULLS ON;
+GO
+SET QUOTED_IDENTIFIER ON;
+GO
+
+CREATE OR ALTER PROCEDURE sp_GestionarUsuario_XML
+    @xmlData XML
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @Accion NVARCHAR(50), 
+            @Id INT, 
+            @Nombre NVARCHAR(100), 
+            @Correo NVARCHAR(100), 
+            @Clave NVARCHAR(50);
+
+    -- Deserializar el XML
+    SELECT 
+        @Accion = T.c.value('(Accion)[1]', 'NVARCHAR(50)'),
+        @Id = T.c.value('(Id)[1]', 'INT'),
+        @Nombre = T.c.value('(Nombre)[1]', 'NVARCHAR(100)'),
+        @Correo = T.c.value('(Correo)[1]', 'NVARCHAR(100)'),
+        @Clave = T.c.value('(Clave)[1]', 'NVARCHAR(50)')
+    FROM @xmlData.nodes('/*') AS T(c);
+
+    -- Lógica del CRUD
+    IF @Accion = 'INSERTAR'
+    BEGIN
+        INSERT INTO Usuarios (Nombre, Correo, Clave)
+        VALUES (@Nombre, @Correo, @Clave);
+        SELECT SCOPE_IDENTITY(); 
+    END
+    ELSE IF @Accion = 'ACTUALIZAR'
+    BEGIN
+        UPDATE Usuarios
+        SET Nombre = @Nombre, 
+            Correo = @Correo, 
+            Clave = @Clave
+        WHERE Id = @Id;
+    END
+    ELSE IF @Accion = 'ELIMINAR'
+    BEGIN
+        DELETE FROM Usuarios WHERE Id = @Id;
+    END
 END
 GO

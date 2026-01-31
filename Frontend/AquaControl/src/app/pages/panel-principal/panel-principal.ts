@@ -11,8 +11,14 @@ import { DataService } from '../../services/data';
 
 @Component({
   selector: 'app-panel-principal',
-  imports: [CommonModule, RouterLink, MatCardModule, MatIconModule, MatDividerModule,
-    MatListModule, MatButtonModule
+  imports: [
+    CommonModule,
+    RouterLink,
+    MatCardModule,
+    MatIconModule,
+    MatDividerModule,
+    MatListModule,
+    MatButtonModule
   ],
   templateUrl: './panel-principal.html',
   styleUrl: './panel-principal.css',
@@ -31,11 +37,7 @@ export class PanelPrincipal implements OnInit {
   }
 
   cargarEstadisticas() {
-    // ----------------------------------------------------
-    // 1. DATOS QUE VIENEN DE DOCKER (Usamos .subscribe)
-    // ----------------------------------------------------
 
-    // Piscinas
     this.dataService.getPiscinas().subscribe({
       next: (data) => {
         this.totalPiscinas = data.length;
@@ -43,7 +45,7 @@ export class PanelPrincipal implements OnInit {
       error: (e) => console.error('Error piscinas:', e)
     });
 
-    // Cultivos
+
     this.dataService.getCultivos().subscribe({
       next: (data) => {
         this.totalCultivos = data.length;
@@ -51,7 +53,7 @@ export class PanelPrincipal implements OnInit {
       error: (e) => console.error('Error cultivos:', e)
     });
 
-    // Parámetros (Para calcular alertas)
+
     this.dataService.getParametros().subscribe({
       next: (data) => {
         // Filtramos sobre la data que acaba de llegar
@@ -61,8 +63,11 @@ export class PanelPrincipal implements OnInit {
       error: (e) => console.error('Error parametros:', e)
     });
 
-    // 2. DATOS QUE SIGUEN EN LOCALSTORAGE (Sincrónicos)
-    const listaUsuarios = this.dataService.getUsuarios();
-    this.totalUsuarios = listaUsuarios.length;
+    this.dataService.getUsuarios().subscribe({
+      next: (data) => {
+        this.totalUsuarios = data.length;
+      },
+      error: (e) => console.error('Error usuarios:', e)
+    });
   }
 }

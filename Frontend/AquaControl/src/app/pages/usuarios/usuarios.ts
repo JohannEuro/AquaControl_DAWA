@@ -1,17 +1,15 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+// Asegúrate de importar la interfaz y servicio correctos
+import { DataService, UsuarioElement } from '../../services/data';
 import { EditarUsuarioDialog } from '../../dialogs/editar-usuario-dialog/editar-usuario-dialog';
-import { DataService, UsuarioElement} from '../../services/data';
-
 
 @Component({
   selector: 'app-usuarios',
@@ -22,7 +20,6 @@ import { DataService, UsuarioElement} from '../../services/data';
     MatCardModule,
     MatButtonModule,
     MatIconModule,
-    MatDividerModule,
     MatFormFieldModule,
     MatInputModule,
     MatDialogModule
@@ -30,23 +27,25 @@ import { DataService, UsuarioElement} from '../../services/data';
   templateUrl: './usuarios.html',
   styleUrl: './usuarios.css',
 })
-export class Usuarios implements OnInit{
+export class Usuarios implements OnInit {
 
   private dialog = inject(MatDialog);
-  private dataService = inject(DataService); // Inyectar servicio
+  private dataService = inject(DataService);
 
-  datosUsuarios: UsuarioElement[] = [];
+  // Columnas actualizadas a los nombres de la API
+  displayedColumns: string[] = ['id', 'nombre', 'correo', 'clave', 'acciones'];
+
   dataSource = new MatTableDataSource<UsuarioElement>([]);
-
-  displayedColumns: string[] = ['id', 'nombreCompleto', 'usuario', 'email', 'rol', 'estado', 'acciones'];
 
   ngOnInit() {
     this.cargarDatos();
   }
 
   cargarDatos() {
-    this.datosUsuarios = this.dataService.getUsuarios();
-    this.dataSource.data = this.datosUsuarios;
+    // AHORA: Petición HTTP GET
+    this.dataService.getUsuarios().subscribe(data => {
+      this.dataSource.data = data;
+    });
   }
 
   aplicarFiltro(event: Event) {
@@ -54,16 +53,14 @@ export class Usuarios implements OnInit{
     this.dataSource.filter = valorFiltro.trim().toLowerCase();
   }
 
-  // --- CREAR NUEVO (Botón) ---
   crearUsuario() {
-    // ID 0 indica que es nuevo
     const nuevoUsuario: UsuarioElement = {
       id: 0,
-      nombreCompleto: '',
-      usuario: '',
-      email: '',
-      rol: 'Productor', // Valor por defecto
-      estado: 'Activo'
+      nombre: '',
+      correo: '',
+      clave: '',
+      rol: 'Admin', // Valor
+      estado: 'Activo' // Valor
     };
 
     const dialogRef = this.dialog.open(EditarUsuarioDialog, {
@@ -73,12 +70,11 @@ export class Usuarios implements OnInit{
 
     dialogRef.afterClosed().subscribe(resultado => {
       if (resultado) {
-        this.actualizarUsuario(resultado);
+        this.guardarEnServidor(resultado);
       }
     });
   }
 
-  // --- EDITAR ---
   editarUsuario(usuario: UsuarioElement) {
     const dialogRef = this.dialog.open(EditarUsuarioDialog, {
       width: '400px',
@@ -87,36 +83,30 @@ export class Usuarios implements OnInit{
 
     dialogRef.afterClosed().subscribe(resultado => {
       if (resultado) {
-        this.actualizarUsuario(resultado);
+        this.guardarEnServidor(resultado);
       }
     });
   }
 
-  // --- GUARDAR (Crear o Editar) ---
-  private actualizarUsuario(usuarioEditado: UsuarioElement) {
-    const index = this.datosUsuarios.findIndex(u => u.id === usuarioEditado.id);
-
-    if (index !== -1) {
-      // EDITAR: Reemplazamos
-      this.datosUsuarios[index] = usuarioEditado;
-    } else {
-      // CREAR: Nuevo ID y push
-      const nuevoId = this.datosUsuarios.length > 0 ? Math.max(...this.datosUsuarios.map(u => u.id)) + 1 : 1;
-      usuarioEditado.id = nuevoId;
-      this.datosUsuarios.push(usuarioEditado);
-    }
-
-    // Guardar en servicio y refrescar tabla
-    this.dataService.saveUsuarios(this.datosUsuarios);
-    this.dataSource.data = this.datosUsuarios;
+  // GUARDAR
+  private guardarEnServidor(usuario: UsuarioElement) {
+    this.dataService.saveUsuario(usuario).subscribe({
+      next: () => {
+        alert('Usuario guardado correctamente');
+        this.cargarDatos(); // Recargamos la tabla
+      },
+      error: (e) => alert('Error al guardar: ' + e.message)
+    });
   }
-
-  // --- ELIMINAR ---
+  // ELIMINAR
   eliminarUsuario(id: number) {
     if (confirm('¿Eliminar este usuario?')) {
-      this.datosUsuarios = this.datosUsuarios.filter(u => u.id !== id);
-      this.dataService.saveUsuarios(this.datosUsuarios);
-      this.dataSource.data = this.datosUsuarios;
+      this.dataService.deleteUsuario(id).subscribe({
+        next: () => {
+          this.cargarDatos(); // Recargar tabla
+        },
+        error: (e) => alert('Error al eliminar')
+      });
     }
   }
 }
