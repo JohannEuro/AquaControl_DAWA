@@ -14,7 +14,6 @@ namespace AquaControl.API.Data
         }
 
         // EL CRUD
-
         public async Task<int> GestionarUsuario(Usuario usuario, string accion)
         {
             int resultadoId = 0;
@@ -27,6 +26,7 @@ namespace AquaControl.API.Data
                     <Nombre>{usuario.Nombre}</Nombre>
                     <Correo>{usuario.Correo}</Correo>
                     <Clave>{usuario.Clave}</Clave>
+                    <Rol>{usuario.Rol}</Rol> 
                 </Usuario>";
 
             using (SqlConnection conexion = new SqlConnection(_cadenaConexion))
@@ -66,7 +66,8 @@ namespace AquaControl.API.Data
                                 Id = Convert.ToInt32(reader["Id"]),
                                 Nombre = reader["Nombre"].ToString()!,
                                 Correo = reader["Correo"].ToString()!,
-                                Clave = reader["Clave"].ToString()! // Aquí sí la leemos para poder editarla
+                                Clave = reader["Clave"].ToString()!,
+                                Rol = reader["Rol"].ToString()!
                             });
                         }
                     }
@@ -98,7 +99,8 @@ namespace AquaControl.API.Data
                             {
                                 Id = Convert.ToInt32(reader["Id"]),
                                 Nombre = reader["Nombre"].ToString()!,
-                                Correo = reader["Correo"].ToString()!
+                                Correo = reader["Correo"].ToString()!,
+                                Rol = reader["Rol"].ToString()!
                             };
                         }
                     }

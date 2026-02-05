@@ -1,0 +1,8 @@
+- Mejorar CRUD de Usuario
+
+
+
+
+--- Ultima mejora ----
+- Se implementó un sistema de roles -> Revisar formulario no tiene combo box
+- Se fixeo que el logo de la app segun esté logueado lleve al panel o a la landing page

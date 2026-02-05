@@ -11,6 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
 import { DataService, UsuarioElement } from '../../services/data';
+import { AuthService } from '../../auth.service';
 
 @Component({
   selector: 'app-usuarios',
@@ -31,6 +32,8 @@ import { DataService, UsuarioElement } from '../../services/data';
 export class Usuarios implements OnInit {
 
   private dataService = inject(DataService);
+  public authService = inject(AuthService);
+
 
   // Columnas de la tabla
   displayedColumns: string[] = ['id', 'nombre', 'correo', 'clave', 'acciones'];
@@ -41,7 +44,8 @@ export class Usuarios implements OnInit {
     id: 0,
     nombre: '',
     correo: '',
-    clave: ''
+    clave: '',
+    rol: ''
   };
 
   ngOnInit() {
@@ -87,6 +91,6 @@ export class Usuarios implements OnInit {
   }
 
   limpiarFormulario() {
-    this.usuarioActual = { id: 0, nombre: '', correo: '', clave: '' };
+    this.usuarioActual = { id: 0, nombre: '', correo: '', clave: '', rol: '' };
   }
 }

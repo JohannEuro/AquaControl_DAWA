@@ -178,26 +178,27 @@ END
 GO
 
 -- =============================================
--- 5. SECCION USUARIO
+-- MÓDULO 5: USUARIOS (CON ROLES)
 -- =============================================
 
--- 1. Crear Tabla Usuarios (Si no existe)
+-- 1. Crear Tabla Usuarios
 IF OBJECT_ID('dbo.Usuarios', 'U') IS NULL
 BEGIN
     CREATE TABLE Usuarios (
         Id INT IDENTITY(1,1) PRIMARY KEY,
         Nombre NVARCHAR(100),
         Correo NVARCHAR(100) UNIQUE,
-        Clave NVARCHAR(50) -- Texto plano (Requisito académico)
+        Clave NVARCHAR(50),
+        Rol NVARCHAR(20) DEFAULT 'Productor' -- Nuevo campo
     );
 
-    -- Insertar Usuario Admin por defecto
-    INSERT INTO Usuarios (Nombre, Correo, Clave) 
-    VALUES ('Administrador', 'admin@aqua.com', '12345');
+    -- Insertamos Usuarios de Prueba
+    INSERT INTO Usuarios (Nombre, Correo, Clave, Rol) VALUES ('Jefe Supremo', 'admin@aqua.com', '12345', 'Admin');
+    INSERT INTO Usuarios (Nombre, Correo, Clave, Rol) VALUES ('Juan Obrero', 'juan@aqua.com', '12345', 'Productor');
 END
 GO
 
--- 2. Procedimiento: Login (Validar Credenciales)
+-- 2. SP Login (Valida y Devuelve el Rol)
 SET ANSI_NULLS ON;
 GO
 SET QUOTED_IDENTIFIER ON;
@@ -207,13 +208,13 @@ CREATE OR ALTER PROCEDURE sp_ValidarUsuario
     @Clave NVARCHAR(50)
 AS
 BEGIN
-    SELECT Id, Nombre, Correo 
+    SELECT Id, Nombre, Correo, Rol 
     FROM Usuarios 
     WHERE Correo = @Correo AND Clave = @Clave;
 END
 GO
 
--- 3. Procedimiento: Listar Usuarios
+-- 3. SP Listar 
 SET ANSI_NULLS ON;
 GO
 SET QUOTED_IDENTIFIER ON;
@@ -225,7 +226,7 @@ BEGIN
 END
 GO
 
--- 4. Procedimiento: Gestión CRUD con XML
+-- 4. SP CRUD XML 
 -- IMPORTANTE: Configuraciones requeridas para manipular XML
 SET ANSI_NULLS ON;
 GO
@@ -242,30 +243,28 @@ BEGIN
             @Id INT, 
             @Nombre NVARCHAR(100), 
             @Correo NVARCHAR(100), 
-            @Clave NVARCHAR(50);
+            @Clave NVARCHAR(50), 
+            @Rol NVARCHAR(20);
 
-    -- Deserializar el XML
     SELECT 
         @Accion = T.c.value('(Accion)[1]', 'NVARCHAR(50)'),
         @Id = T.c.value('(Id)[1]', 'INT'),
         @Nombre = T.c.value('(Nombre)[1]', 'NVARCHAR(100)'),
         @Correo = T.c.value('(Correo)[1]', 'NVARCHAR(100)'),
-        @Clave = T.c.value('(Clave)[1]', 'NVARCHAR(50)')
+        @Clave = T.c.value('(Clave)[1]', 'NVARCHAR(50)'),
+        @Rol = T.c.value('(Rol)[1]', 'NVARCHAR(20)') 
     FROM @xmlData.nodes('/*') AS T(c);
 
-    -- Lógica del CRUD
     IF @Accion = 'INSERTAR'
     BEGIN
-        INSERT INTO Usuarios (Nombre, Correo, Clave)
-        VALUES (@Nombre, @Correo, @Clave);
+        INSERT INTO Usuarios (Nombre, Correo, Clave, Rol)
+        VALUES (@Nombre, @Correo, @Clave, @Rol);
         SELECT SCOPE_IDENTITY(); 
     END
     ELSE IF @Accion = 'ACTUALIZAR'
     BEGIN
         UPDATE Usuarios
-        SET Nombre = @Nombre, 
-            Correo = @Correo, 
-            Clave = @Clave
+        SET Nombre = @Nombre, Correo = @Correo, Clave = @Clave, Rol = @Rol
         WHERE Id = @Id;
     END
     ELSE IF @Accion = 'ELIMINAR'

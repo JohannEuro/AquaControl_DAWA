@@ -1,16 +1,16 @@
 <mat-toolbar color="primary" class="d-flex justify-content-between align-items-center">
 
-  <a routerLink="/panel" class="text-white text-decoration-none d-flex align-items-center gap-2">
+  <a [routerLink]="(auth.logeado | async) ? '/panel' : '/'" class="text-white text-decoration-none d-flex align-items-center gap-2">
     <mat-icon>waves</mat-icon>
     <span class="fs-5 fw-bold">AquaControl</span>
   </a>
 
   <div class="d-none d-md-flex align-items-center gap-2">
 
-    <ng-container *ngIf="nombreUsuario$ | async as nombre">
+    <ng-container *ngIf="auth.logeado | async as nombre">
       <span class="me-3 small opacity-75">Hola, {{ nombre }}</span>
 
-      <button mat-button routerLink="/usuarios">Usuarios</button>
+      <button mat-button routerLink="/usuarios" *ngIf="auth.esAdmin()">Usuarios</button>
       <button mat-button routerLink="/piscinas">Piscinas</button>
       <button mat-button routerLink="/cultivos">Cultivos</button>
       <button mat-button routerLink="/parametros">Parámetros</button>
@@ -21,7 +21,7 @@
       </button>
     </ng-container>
 
-    <ng-container *ngIf="(nombreUsuario$ | async) === null">
+    <ng-container *ngIf="(auth.logeado | async) === null">
       <button mat-button routerLink="/acerca-de">Acerca de</button>
       <button mat-button routerLink="/iniciar-sesion">Iniciar Sesión</button>
     </ng-container>
@@ -42,7 +42,7 @@
       </button>
       <mat-divider></mat-divider>
 
-      <button mat-menu-item routerLink="/usuarios">
+      <button mat-menu-item routerLink="/usuarios" *ngIf="auth.esAdmin()">
         <mat-icon>people</mat-icon> Usuarios
       </button>
       <button mat-menu-item routerLink="/piscinas">

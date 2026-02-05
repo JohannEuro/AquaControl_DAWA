@@ -9,8 +9,9 @@ import { MatMenuModule } from '@angular/material/menu';
 
 import { AuthService } from '../auth.service';
 import { Observable, observable } from 'rxjs';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { MatDivider } from '@angular/material/divider';
+
 
 
 
@@ -20,6 +21,7 @@ import { MatDivider } from '@angular/material/divider';
     CommonModule,
     NgIf,
     AsyncPipe,
+    RouterOutlet,
     RouterLink,
     MatMenuModule,
     MatDivider,
@@ -33,7 +35,7 @@ import { MatDivider } from '@angular/material/divider';
 
 export class MenuHorizontal {
   //Autenticacion Servicio (INYECCION)
-  private authService = inject(AuthService);
+  public auth = inject(AuthService);
   private router=inject(Router);
 
   //Variable Estado para html
@@ -41,7 +43,7 @@ export class MenuHorizontal {
   public nombreUsuario$: Observable<string | null>;
 
   constructor(){
-    this.nombreUsuario$ = this.authService.logeado;
+    this.nombreUsuario$ = this.auth.logeado;
 
 
   }
@@ -50,7 +52,7 @@ export class MenuHorizontal {
   public alCerrarSesion(): void {
 
 
-    this.authService.logout();
+    this.auth.logout();
     this.router.navigate(['/']);
   }
 
