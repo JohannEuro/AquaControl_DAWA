@@ -1,41 +1,49 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http'; // IMPORTANTE
+import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap, catchError, of, map } from 'rxjs';
-import { UsuarioElement } from './services/data'; // Importa la interfaz
+import { UsuarioElement } from './services/data';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
 
-  // URL del Backend
   private readonly apiUrl = 'http://localhost:5000/api/Usuarios/login';
-
   private http = inject(HttpClient);
+
+  // Clave para guardar en el navegador
+  private readonly KEY_SESION = 'aqua_session_user';
 
   // Variable de estado
   public logeado = new BehaviorSubject<string | null>(null);
 
-  constructor() { }
+  constructor() {
+    const usuarioGuardado = localStorage.getItem(this.KEY_SESION);
+    if (usuarioGuardado) {
+      this.logeado.next(usuarioGuardado);
+    }
+  }
 
   // INICIO DE SESION
   public login(correo: string, clave: string): Observable<boolean> {
-
     const body = { correo: correo, clave: clave };
 
-    // Hacemos POST a la API
     return this.http.post<UsuarioElement>(this.apiUrl, body).pipe(
       tap(usuarioRespuesta => {
-        // SI ES EXITOSO (La API devuelve el usuario)
         if (usuarioRespuesta) {
-          this.logeado.next(usuarioRespuesta.nombre); // Guardamos el nombre
-          console.log('Servicio: Login exitoso en SQL');
+          const nombreUser = usuarioRespuesta.nombre;
+
+          // Guardamos en RAM (para que la barra cambie ya)
+          this.logeado.next(nombreUser);
+
+          // GUARDAR EN DISCO LA SESION
+          localStorage.setItem(this.KEY_SESION, nombreUser);
+
+          console.log('Login exitoso y guardado');
         }
       }),
-       map(() => true),
-
+      map(() => true),
       catchError(error => {
-        // SI FALLA (401 Unauthorized)
         console.error('Error de login', error);
         this.logeado.next(null);
         return of(false);
@@ -43,7 +51,16 @@ export class AuthService {
     );
   }
 
+  // CIERRE DE SESION
   public logout(): void {
+    // Borramos de RAM
     this.logeado.next(null);
+    // Borramos de DISCO
+    localStorage.removeItem(this.KEY_SESION);
+  }
+
+  // Método para saber si está logueado sin suscribirse
+  public estaLogueado(): boolean {
+    return localStorage.getItem(this.KEY_SESION) !== null;
   }
 }
