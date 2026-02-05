@@ -1,36 +1,89 @@
-<table mat-table [dataSource]="dataSource" class="w-100">
+<div class="container-fluid p-4">
 
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef> ID </th>
-        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-      </ng-container>
+    <h1 class="titulo-modulo mb-3">Gestión de Usuarios</h1>
 
-      <ng-container matColumnDef="nombre">
-        <th mat-header-cell *matHeaderCellDef> Nombre </th>
-        <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
-      </ng-container>
+    <mat-card class="p-4 mb-4 mat-elevation-z4">
+      <h3 class="mb-3">{{ usuarioActual.id === 0 ? 'Nuevo Usuario' : 'Editando Usuario' }}</h3>
 
-      <ng-container matColumnDef="correo">
-        <th mat-header-cell *matHeaderCellDef> Correo </th>
-        <td mat-cell *matCellDef="let element"> {{element.correo}} </td>
-      </ng-container>
+      <div class="row">
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Nombre Completo</mat-label>
+            <input matInput [(ngModel)]="usuarioActual.nombre" placeholder="Ej. Juan Perez">
+          </mat-form-field>
+        </div>
 
-      <ng-container matColumnDef="clave">
-        <th mat-header-cell *matHeaderCellDef> Clave </th>
-        <td mat-cell *matCellDef="let element"> {{element.clave}} </td>
-      </ng-container>
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Correo Electrónico</mat-label>
+            <input matInput [(ngModel)]="usuarioActual.correo" placeholder="admin@aqua.com">
+          </mat-form-field>
+        </div>
 
-      <ng-container matColumnDef="acciones">
-        <th mat-header-cell *matHeaderCellDef class="text-end"> Acciones </th>
-        <td mat-cell *matCellDef="let element" class="text-end">
-          <button mat-icon-button color="primary" (click)="editarUsuario(element)">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button color="warn" (click)="eliminarUsuario(element.id)">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </td>
-      </ng-container>
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Contraseña</mat-label>
+            <input matInput [(ngModel)]="usuarioActual.clave" type="text" placeholder="12345">
+          </mat-form-field>
+        </div>
+      </div>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <div class="d-flex justify-content-end gap-2 mt-2">
+        <button mat-stroked-button color="warn" (click)="limpiarFormulario()" *ngIf="usuarioActual.id !== 0">
+          Cancelar Edición
+        </button>
+
+        <button mat-raised-button color="primary" (click)="guardar()">
+          <mat-icon>save</mat-icon>
+          {{ usuarioActual.id === 0 ? 'Guardar Nuevo' : 'Actualizar Datos' }}
+        </button>
+      </div>
+    </mat-card>
+
+    <mat-card class="mat-elevation-z4 p-0 overflow-hidden">
+      <table mat-table [dataSource]="dataSource" class="w-100">
+
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef class="bg-light"> ID </th>
+          <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="nombre">
+          <th mat-header-cell *matHeaderCellDef class="bg-light"> Nombre </th>
+          <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="correo">
+          <th mat-header-cell *matHeaderCellDef class="bg-light"> Correo </th>
+          <td mat-cell *matCellDef="let element"> {{element.correo}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="clave">
+          <th mat-header-cell *matHeaderCellDef class="bg-light"> Clave </th>
+          <td mat-cell *matCellDef="let element"> {{element.clave}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef class="text-end bg-light"> Acciones </th>
+          <td mat-cell *matCellDef="let element" class="text-end">
+            <button mat-icon-button color="primary" (click)="editar(element)" matTooltip="Editar">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="eliminar(element.id)" matTooltip="Eliminar">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell p-4 text-center text-muted" colspan="5">
+            No hay usuarios registrados aún.
+          </td>
+        </tr>
+      </table>
+    </mat-card>
+
+  </div>
